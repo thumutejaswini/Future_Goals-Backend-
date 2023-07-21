@@ -231,6 +231,97 @@ const btech = async (...Parameters) => {
   var result = await Query(Sql);
   return result;
 };
+//---------------------adminreg------------------------------
+const adminreg = async (...Parameters) => {
+
+  let Sql;
+  console.log(typeof (Parameters[2]));
+  Details = Parameters[2];
+
+  switch (Parameters[1]) {
+    case "Insert":
+      Sql = `insert into ${Parameters[0]} values('${Details.name}','${Details.mail}','${Details.password}','${Details.birth}','${Details.phonenumber}')`;
+      break;
+    case "Update":
+      Sql = `update ${Parameters[0]} set name = '${Parameters[3].name}', password = '${Parameters[3].password}' where name = '${Details}'`;
+      break;
+    case "Delete":
+      Sql = `delete from ${Parameters[0]} where name = '${Details}'`;
+      break;
+    case "Read":
+      
+        Sql = `select mail,password from ${Parameters[0]} where mail = '${Details}'`;
+      
+      break;
+    default:
+      console.error("Invalid Parameters");
+      break;
+  }
+  console.log(Sql);
+  var result = await Query(Sql);
+  return result;
+};
+
+// -----------------------------adminlogin-------------------------
+const adminlogin = async (...Parameters) => {
+
+  let Sql;
+  console.log(typeof (Parameters[2]));
+  Details = Parameters[2];
+  try {
+    Details = eval(`(${Parameters[2]})`);
+  } catch (err) { }
+  switch (Parameters[1]) {
+    case "Read":
+      Sql = `select mail,password from ${Parameters[0]} `;
+      if (Details != "All") {
+        Sql = `select * from ${Parameters[0]} where mail = '${Details}'`;
+      }
+      break;
+    default:
+      console.error("Invalid Parameters");
+      break;
+  }
+  console.log(Sql);
+  var result = await Query(Sql);
+  return result;
+};
+//-------------------------------courses-----------------------------------------------------
+
+const courses = async (...Parameters) => {
+
+  let Sql;
+  console.log(typeof (Parameters[2]));
+  Details = Parameters[2];
+  // try {
+  //   Details = eval(`(${Parameters[2]})`);
+  // } catch (err) { }
+  switch (Parameters[1]) {
+    case "Insert":
+      Sql = `insert into ${Parameters[0]} values('${Details.course_name}','${Details.course_elgibility}','${Details.course_duration}')`;
+      break;
+    case "Update":
+      Sql = `update ${Parameters[0]} set coursename = '${Parameters[3].course_name}', duration = '${Parameters[3].course_elgibility}', elgibility= '${Parameters[3].course_duration}',  where course_name = '${Details}'`;
+      break;
+    case "Delete":
+      Sql = `delete from ${Parameters[0]} where course_name = '${Details}'`;
+      break;
+    case "Read":
+
+      Sql = `select * from ${Parameters[0]} `;
+      if (Details != "All") {
+        Sql = `select * from ${Parameters[0]} where course_name = '${Details}'`;
+      }
+
+      break;
+    default:
+      console.error("Invalid Parameters");
+      break;
+  }
+  console.log(Sql);
+  var result = await Query(Sql);
+  return result;
+};
 
 
 module.exports = {
@@ -240,4 +331,8 @@ module.exports = {
   contact: contact,
   inter: inter,
   btech: btech,
+  adminreg:adminreg,
+  adminlogin:adminlogin,
+  courses:courses,
+
 };
